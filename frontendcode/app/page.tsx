@@ -142,7 +142,7 @@ export default function Home() {
   useEffect(() => {
     const fetchTeams = async () => {
       try {
-        const response = await fetch(`https://heliverse-assignment-90tw.onrender.com//api/team`);
+        const response = await fetch(`https://heliverse-assignment-90tw.onrender.com/api/team`);
         if (!response.ok) {
           throw new Error('Failed to fetch teams');
         }
