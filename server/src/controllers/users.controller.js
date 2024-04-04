@@ -5,10 +5,13 @@ import { User } from '../models/index.js';
 // Controller for creating a new user
 // Controller for creating a new user
 export const createUser = async (req, res) => {
-    const { id, first_name, last_name, email, gender, avatar, domain, available } = req.body;
+    const { first_name, last_name, email, gender, avatar, domain, available } = req.body;
     try {
-      const newUser = await User.create({ id, first_name, last_name, email, gender, avatar, domain, available });
+      const newUser = await User.create({first_name, last_name, email, gender, avatar, domain, available });
       res.status(201).json(newUser);
+      console.log('====================================');
+      console.log(newUser);
+      console.log('====================================');
     } catch (error) {
       console.error('Error creating user:', error.message);
       res.status(400).json({ error: 'Failed to create user' });
@@ -20,7 +23,7 @@ export const createUser = async (req, res) => {
   export const getAllUsers = async (req, res) => {
     try {
       const users = await User.find({});
-      res.json(users.slice(1,15));
+      res.json(users);
     } catch (error) {
       console.error('Error fetching users:', error.message);
       res.status(500).json({ error: 'Internal Server Error' });

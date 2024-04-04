@@ -44,7 +44,7 @@ export const createTeam = async (req, res) => {
   // Controller for fetching all teams
   export const getAllTeams = async (req, res) => {
     try {
-      const teams = await Team.find({});
+      const teams = await Team.find({}).populate('users');
       res.json(teams);
     } catch (error) {
       console.error('Error fetching teams:', error.message);
