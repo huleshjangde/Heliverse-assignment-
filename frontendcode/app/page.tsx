@@ -258,7 +258,7 @@ export default function Home() {
 </div>
 }
    
-    <div className="w-full fixed z-50 top-2 h-fit bg-white flex justify-between px-4 sm:px-20  shadow-md py-5"><h1 className="font-bold text-lg ">Heliverse Assignment</h1> <Button variant={"default"} onClick={()=> setShow(!show)}>Manage Team  <p className="size-5 rounded-full bg-white text-black ml-2">{team.selectedUsers.length > 0 && team.selectedUsers.length}</p></Button></div>
+    <div className="w-[95vw] fixed z-50 top-2 h-fit bg-white flex justify-between px-4 sm:px-20  shadow-md py-5"><h1 className="font-bold text-lg ">Heliverse Assignment</h1> <Button variant={"default"} onClick={()=> setShow(!show)}>Manage Team  <p className="size-5 rounded-full bg-white text-black ml-2">{team.selectedUsers.length > 0 && team.selectedUsers.length}</p></Button></div>
       <div className="flex  mt-24 flex-col space-x-4 mb-4 px-2 sm:px-10 border border-gray-300 rounded-md shadow-md mx-0 sm:mx-10 my-10">
       <p className=" font-bold px-5 text-2xl  w-fit rounded-md mb-5 mt-2">Filtter Users</p>
       <input
