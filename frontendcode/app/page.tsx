@@ -51,23 +51,110 @@ export default function Home() {
 
   const [userData, setUserData] = useState<User[] | null>(null);
 
+
+
+
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
   useEffect(() => {
-    async function fetchUserData() {
-      try {
-        const response = await fetch(`https://heliverse-assignment-90tw.onrender.com/api/users`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch user data");
-        }
-        const data: User[] = await response.json();
-        // setUserData(data);
-        dispatch(setUsers(data));
-      } catch (error: any) {
-        console.error("Error fetching user data:", error.message);
+    fetchUsers();
+  }, [currentPage]);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await fetch(`https://heliverse-assignment-90tw.onrender.com/api/users?page=${currentPage}&limit=20`);
+      const data = await response.json();
+      setUsers(data.users);
+      dispatch(setUsers(data.users));
+      setTotalPages(data.pagination.totalPages);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
+  const renderPageNumbers = () => {
+    const pageNumbers = [];
+    const maxPagesToShow = 5; // Maximum number of page numbers to show before displaying "..." for remaining pages
+  
+    let startPage = 1;
+    let endPage = totalPages;
+  
+    if (totalPages > maxPagesToShow) {
+      const halfMaxPages = Math.floor(maxPagesToShow / 2);
+      if (currentPage <= halfMaxPages) {
+        endPage = maxPagesToShow;
+      } else if (currentPage >= totalPages - halfMaxPages) {
+        startPage = totalPages - maxPagesToShow + 1;
+      } else {
+        startPage = currentPage - halfMaxPages;
+        endPage = currentPage + halfMaxPages;
       }
     }
+  
+    if (startPage > 1) {
+      pageNumbers.push(
+        <button
+          key="1"
+          onClick={() => handlePageChange(1)}
+          className="px-3 py-1 bg-gray-200 text-gray-700 hover:bg-gray-300 mr-1"
+        >
+          1
+        </button>
+      );
+      pageNumbers.push(<span key="ellipsis1">...</span>);
+    }
+  
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(
+        <button
+          key={i}
+          onClick={() => handlePageChange(i)}
+          className={`px-3 py-1 ${currentPage === i ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'} hover:bg-gray-300 mr-1`}
+        >
+          {i}
+        </button>
+      );
+    }
+  
+    if (endPage < totalPages) {
+      pageNumbers.push(<span key="ellipsis2">...</span>);
+      pageNumbers.push(
+        <button
+          key={totalPages}
+          onClick={() => handlePageChange(totalPages)}
+          className="px-3 py-1 bg-gray-200 text-gray-700 hover:bg-gray-300 mr-1"
+        >
+          {totalPages}
+        </button>
+      );
+    }
+  
+    return pageNumbers;
+  };
+  
+  const handlePageChange = (pageNumber:any) => {
+    setCurrentPage(pageNumber);
+  };
 
-    fetchUserData();
-  }, []);
+
+  // useEffect(() => {
+  //   async function fetchUserData() {
+  //     try {
+  //       const response = await fetch(`https://heliverse-assignment-90tw.onrender.com/api/users`);
+  //       if (!response.ok) {
+  //         throw new Error("Failed to fetch user data");
+  //       }
+  //       const data: User[] = await response.json();
+  //       // setUserData(data);
+  //       dispatch(setUsers(data));
+  //     } catch (error: any) {
+  //       console.error("Error fetching user data:", error.message);
+  //     }
+  //   }
+
+  //   fetchUserData();
+  // }, []);
 
   const filteredUsers = users?.filter(
     (user) =>
@@ -276,6 +363,20 @@ export default function Home() {
           )}
         </div>
       
+      </div>
+      <div className="flex justify-center items-center gap-5 my-5">
+        {/* Previous button */}
+        <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+          Prev
+        </button>
+
+        {/* Page numbers */}
+        {renderPageNumbers()}
+
+        {/* Next button */}
+        <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
+          Next
+        </button>
       </div>
     </>
   );

@@ -21,14 +21,34 @@ export const createUser = async (req, res) => {
   
   // Controller for retrieving all users
   export const getAllUsers = async (req, res) => {
-    try {
-      const users = await User.find({});
-      res.json(users);
-    } catch (error) {
-      console.error('Error fetching users:', error.message);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-  };
+    
+      try {
+        const page = parseInt(req.query.page) || 1; // Current page number
+        const limit = parseInt(req.query.limit) || 20; // Number of items per page
+        const startIndex = (page - 1) * limit;
+    console.log(page);
+        const users = await User.find()
+          .skip(startIndex)
+          .limit(limit);
+    
+        const totalUsers = await User.countDocuments();
+        const totalPages = Math.ceil(totalUsers / limit);
+    
+        const pagination = {
+          currentPage: page,
+          totalPages: totalPages,
+          hasNextPage: page < totalPages,
+          hasPrevPage: page > 1,
+          nextPage: page + 1,
+          prevPage: page - 1
+        };
+    
+        res.json({ users, pagination });
+      } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+      }}
+  
   
   // Controller for retrieving a specific user by ID
   export const getUserById = async (req, res) => {
