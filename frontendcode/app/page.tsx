@@ -75,7 +75,7 @@ export default function Home() {
   };
   const renderPageNumbers = () => {
     const pageNumbers = [];
-    const maxPagesToShow = 5; // Maximum number of page numbers to show before displaying "..." for remaining pages
+    const maxPagesToShow = 5; 
   
     let startPage = 1;
     let endPage = totalPages;
