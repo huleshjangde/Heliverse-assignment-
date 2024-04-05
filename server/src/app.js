@@ -1,4 +1,3 @@
-// Import required modules
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
@@ -9,11 +8,9 @@ import teamRouter from './routes/team.routes.js'
 
 const app = express();
 
-// Middleware setup
 app.use(bodyParser.json());
 app.use(cors());
 
-// Read users data from JSON file
 const usersData = JSON.parse(fs.readFileSync('./heliverse_mock_data.json', 'utf-8'));
 
 // Connect to MongoDB
