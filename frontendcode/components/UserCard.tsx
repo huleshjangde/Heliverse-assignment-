@@ -42,7 +42,7 @@ export default function UserCard({ user, onAddToTeam,onRemove }: UserCardProps) 
 
     const handleDeleteUser = async (id:string) => {
       try {
-        const response = await fetch(`http://localhost:3000/api/users/${id}`, {
+        const response = await fetch(`https://heliverse-assignment-90tw.onrender.com/api/users/${id}`, {
           method: 'DELETE',
         });
 
